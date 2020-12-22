@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+useradd -m -s /bin/zsh bodnar
+
+mkdir /home/bodnar/.ssh
+chown -R bodnar:bodnar /home/bodnar/.ssh
+chmod 700 /home/bodnar/.ssh
+curl -s https://danielbodnar.keybase.pub/authorized_keys?dl=1 >> /home/bodnar/.ssh/authorized_keys
+chown -R bodnar:bodnar /home/bodnar/.ssh
+chmod 700 /home/bodnar/.ssh
+printf 'bodnar:$6$MGAPXVV4SWrAaR9o$35t6ujWkgEkmBZFA7v2oFRLB7u.Or34GXnZe5K05r/uGAIiiM.eRnaBC54XBB73iIbRdYk8sBcphVgq3zwpHS0' | chpasswd -c SHA512 -e
+
+systemctl enable --now sshd
+
+curl -s https://danielbodnar.github.io/archzfs/init > init-zfs.sh
