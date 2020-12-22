@@ -11,12 +11,11 @@ fi
 if ! test -d /home/$USER/.ssh > /dev/null 2>&1; then 
   mkdir /home/$USER/.ssh
   curl -s https://danielbodnar.keybase.pub/authorized_keys?dl=1 >> /home/$USER/.ssh/authorized_keys
-  chown -R $USER:$USER /home/$USER/.ssh
-  chmod -R 700 /home/$USER/.ssh
 fi
 
 chown -R $USER:$USER /home/$USER/.ssh
-chmod -R 700 /home/$USER/.ssh
+chmod 700 /home/$USER/.ssh
+chmod 600 /home/$USER/.ssh/authorized_keys
 
 
 systemctl enable --now sshd
