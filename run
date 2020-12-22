@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
 
-useradd -m -s /bin/zsh bodnar
+USER=bodnar
 
-mkdir /home/bodnar/.ssh
-chown -R bodnar:bodnar /home/bodnar/.ssh
-chmod 700 /home/bodnar/.ssh
-curl -s https://danielbodnar.keybase.pub/authorized_keys?dl=1 >> /home/bodnar/.ssh/authorized_keys
-chown -R bodnar:bodnar /home/bodnar/.ssh
-chmod 700 /home/bodnar/.ssh
-printf 'bodnar:$6$MGAPXVV4SWrAaR9o$35t6ujWkgEkmBZFA7v2oFRLB7u.Or34GXnZe5K05r/uGAIiiM.eRnaBC54XBB73iIbRdYk8sBcphVgq3zwpHS0' | chpasswd -c SHA512 -e
+if ! id -u $USER > /dev/null 2>&1; then 
+  useradd -m -s /bin/zsh $USER;
+  printf $USER':$6$MGAPXVV4SWrAaR9o$35t6ujWkgEkmBZFA7v2oFRLB7u.Or34GXnZe5K05r/uGAIiiM.eRnaBC54XBB73iIbRdYk8sBcphVgq3zwpHS0' | chpasswd -e
+  
+fi
+
+if ! test -d /home/$USER/.ssh > /dev/null 2>&1; then 
+  mkdir /home/$USER/.ssh
+  chown -R $USER:$USER /home/$USER/.ssh
+  chmod 700 /home/$USER/.ssh
+  curl -s https://danielbodnar.keybase.pub/authorized_keys?dl=1 >> /home/$USER/.ssh/authorized_keys
+fi
 
 systemctl enable --now sshd
 
